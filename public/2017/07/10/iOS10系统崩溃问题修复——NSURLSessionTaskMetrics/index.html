@@ -1,0 +1,848 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,10.2系统崩溃,NSURLSessionTaskMetrics," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="现象奔溃日志：
+123456789101112131415161718192021222324252627CoreFoundation    0x1816721d8    ___exceptionPreprocess + 148libobjc.A.dylib    0x1800ac55c    _objc_exception_throwFoundation    0x182280b4c    -[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS10系统崩溃问题修复——NSURLSessionTaskMetrics">
+<meta property="og:url" content="http://www.unko.cn/2017/07/10/iOS10系统崩溃问题修复——NSURLSessionTaskMetrics/index.html">
+<meta property="og:site_name" content="unko">
+<meta property="og:description" content="现象奔溃日志：
+123456789101112131415161718192021222324252627CoreFoundation    0x1816721d8    ___exceptionPreprocess + 148libobjc.A.dylib    0x1800ac55c    _objc_exception_throwFoundation    0x182280b4c    -[">
+<meta property="og:updated_time" content="2017-07-10T07:54:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS10系统崩溃问题修复——NSURLSessionTaskMetrics">
+<meta name="twitter:description" content="现象奔溃日志：
+123456789101112131415161718192021222324252627CoreFoundation    0x1816721d8    ___exceptionPreprocess + 148libobjc.A.dylib    0x1800ac55c    _objc_exception_throwFoundation    0x182280b4c    -[">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.unko.cn/2017/07/10/iOS10系统崩溃问题修复——NSURLSessionTaskMetrics/"/>
+
+
+
+
+
+  <title> iOS10系统崩溃问题修复——NSURLSessionTaskMetrics | unko </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">unko</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">unko</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.unko.cn/2017/07/10/iOS10系统崩溃问题修复——NSURLSessionTaskMetrics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="unko">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="unko">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS10系统崩溃问题修复——NSURLSessionTaskMetrics
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T15:47:52+08:00">
+                2017-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/10/iOS10系统崩溃问题修复——NSURLSessionTaskMetrics/" class="leancloud_visitors" data-flag-title="iOS10系统崩溃问题修复——NSURLSessionTaskMetrics">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>奔溃日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">CoreFoundation    0x1816721d8    ___exceptionPreprocess + 148</span><br><span class="line"></span><br><span class="line">libobjc.A.dylib    0x1800ac55c    _objc_exception_throw</span><br><span class="line"></span><br><span class="line">Foundation    0x182280b4c    -[_NSConcreteDateInterval dealloc] + 0</span><br><span class="line"></span><br><span class="line">CFNetwork    0x181eab3e0    -[__NSCFURLSessionTaskMetrics _initWithTask:] + 692</span><br><span class="line"></span><br><span class="line">CFNetwork    0x181eab028    -[NSURLSessionTaskMetrics _initWithTask:] + 100</span><br><span class="line"></span><br><span class="line">CFNetwork    0x181d3016c    -[__NSCFURLLocalSessionConnection _tick_finishing] + 372</span><br><span class="line"></span><br><span class="line">libdispatch.dylib    0x1804fd200    __dispatch_call_block_and_release + 24</span><br><span class="line"></span><br><span class="line">libdispatch.dylib    0x1804fd1c0    __dispatch_client_callout + 16</span><br><span class="line"></span><br><span class="line">libdispatch.dylib    0x18050b444    __dispatch_queue_serial_drain + 928</span><br><span class="line"></span><br><span class="line">libdispatch.dylib    0x1805009a8    __dispatch_queue_invoke + 652</span><br><span class="line"></span><br><span class="line">libdispatch.dylib    0x18050d38c    __dispatch_root_queue_drain + 572</span><br><span class="line"></span><br><span class="line">libdispatch.dylib    0x18050d0ec    __dispatch_worker_thread3 + 124</span><br><span class="line"></span><br><span class="line">libsystem_pthread.dylib    0x1807062b8    __pthread_wqthread + 1288</span><br><span class="line"></span><br><span class="line">libsystem_pthread.dylib    0x180705da4    _start_wqthread + 4</span><br></pre></td></tr></table></figure>
+<p><code>NSURLSessionTaskMetrics</code>这个类在 iOS10.0新增。此崩溃发生在iOS10.0 - 10.2，不包括 iOS10.2。</p>
+<p>在<a href="http://openradar.appspot.com/28301343" target="_blank" rel="external">Open Radar</a>上找到了这个 bug report。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">NSGenericException &quot;Start date cannot be later in time than end date!&quot; in -[NSURLSessionTaskMetrics _initWithTask:]</span><br><span class="line">Originator:	nobrien	</span><br><span class="line">Number:	rdar://28301343	Date Originated:	14-Sep-2016 09:16 AM</span><br><span class="line">Status:	Open	Resolved:	</span><br><span class="line">Product:	iOS SDK	Product Version:	10</span><br><span class="line">Classification:	Crash/Hang/Data Loss	Reproducible:	Unable</span><br><span class="line"> </span><br><span class="line">Summary:</span><br><span class="line">Trickling in crashes with NSGenericException - Start date cannot be later in time than end date!</span><br><span class="line"></span><br><span class="line">Steps to Reproduce:</span><br><span class="line">Cannot reproduce locally</span><br><span class="line"></span><br><span class="line">Expected Results:</span><br><span class="line">No exception</span><br><span class="line"></span><br><span class="line">Actual Results:</span><br><span class="line">Exception</span><br><span class="line"></span><br><span class="line">Regression:</span><br><span class="line">New to iOS 10 (makes sense since this is in the new NSURLSessionTaskMetrics code</span><br><span class="line"></span><br><span class="line">Notes:</span><br><span class="line">Is there potential risk with clock skew?  FWIW: we do all our timing metrics with mach time to avoid potential issues with timezone traversals, regional settings changes or daylight savings time changes.</span><br></pre></td></tr></table></figure>
+<p>同时在评论中，网友给出了临时的解决办法，那么我们就参考这个方法来修复我们的 bug。</p>
+<p>解决方案：</p>
+<p> hook<code>NSURLSessionTaskMetrics</code>的<code>_initWithTask:</code>函数。</p>
+<h3 id="本地代码修复"><a href="#本地代码修复" class="headerlink" title="本地代码修复"></a>本地代码修复</h3><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@interface NSURLSessionTask(DDBugFix)</span><br><span class="line">@property double startTime;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface NSURLSessionTaskMetrics(DDBugFix)</span><br><span class="line">- (instancetype)DDBugFix_initWithTask:(NSURLSessionTask *)task;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation NSURLSessionTaskMetrics(DDBugFix)</span><br><span class="line">- (instancetype)DDBugFix_initWithTask:(NSURLSessionTask *)task</span><br><span class="line">&#123;</span><br><span class="line">    if ([NSDate timeIntervalSinceReferenceDate] - task.startTime &lt; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        CFRelease((__bridge CFTypeRef)self);</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return [self DDBugFix_initWithTask:task];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation DDSystemBugFix</span><br><span class="line">+(void)load &#123;</span><br><span class="line">    NSString * systemVersion = [[UIDevice currentDevice] systemVersion];</span><br><span class="line">    NSString * startVersion = @&quot;10.0&quot;;</span><br><span class="line">    NSString * endVersion = @&quot;10.2&quot;;</span><br><span class="line">    if ([systemVersion compare:startVersion options:NSNumericSearch] &gt;= NSOrderedSame &amp;&amp;</span><br><span class="line">        [systemVersion compare:endVersion options:NSNumericSearch] &lt; NSOrderedSame) &#123;</span><br><span class="line">        DDSwizzleInstanceMethod([NSURLSessionTaskMetrics class],@selector(_initWithTask:),@selector(DDBugFix_initWithTask:));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>写完之后感觉也没什么问题，但是后来同事提醒<code>@selector(_initWithTask:)</code>这个方式在提审的时候是不是有判断为调用私有 API 的风险。</p>
+<p>后修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">@interface NSURLSessionTaskMetrics(DDBugFix)</span><br><span class="line">- (instancetype)DDBugFix_initWithTask:(NSURLSessionTask *)task;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation NSURLSessionTaskMetrics(DDBugFix)</span><br><span class="line">- (instancetype)DDBugFix_initWithTask:(NSURLSessionTask *)task</span><br><span class="line">&#123;</span><br><span class="line">    NSNumber * timeNumb = [task valueForKey:@&quot;startTime&quot;];</span><br><span class="line">    if ([NSDate timeIntervalSinceReferenceDate] - [timeNumb doubleValue] &lt; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        CFRelease((__bridge CFTypeRef)self);</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return [self DDBugFix_initWithTask:task];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation DDSystemBugFix</span><br><span class="line">+(void)load &#123;</span><br><span class="line">    NSString * systemVersion = [[UIDevice currentDevice] systemVersion];</span><br><span class="line">    NSString * startVersion = @&quot;10.0&quot;;</span><br><span class="line">    NSString * endVersion = @&quot;10.2&quot;;</span><br><span class="line">    if ([systemVersion compare:startVersion options:NSNumericSearch] &gt;= NSOrderedSame &amp;&amp;</span><br><span class="line">        [systemVersion compare:endVersion options:NSNumericSearch] &lt; NSOrderedSame) &#123;</span><br><span class="line">        DDSwizzleInstanceMethod([NSURLSessionTaskMetrics class],NSSelectorFromString(@&quot;_initWithTask:&quot;),@selector(DDBugFix_initWithTask:));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h3 id="JSPatch下修复"><a href="#JSPatch下修复" class="headerlink" title="JSPatch下修复"></a>JSPatch下修复</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"UIDevice, NSDate"</span>);</span><br><span class="line"></span><br><span class="line">defineClass(<span class="string">"NSURLSessionTaskMetrics"</span>, &#123;</span><br><span class="line">    __initWithTask: <span class="function"><span class="keyword">function</span>(<span class="params">task</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> systemVersion = UIDevice.currentDevice().systemVersion();</span><br><span class="line">        <span class="keyword">var</span> startVersion = <span class="string">"10.0"</span>;</span><br><span class="line">        <span class="keyword">var</span> endVersion = <span class="string">"10.2"</span>;</span><br><span class="line">        <span class="keyword">if</span> (systemVersion.compare_options(startVersion, <span class="number">64</span>) &gt;= <span class="number">0</span> &amp;&amp; systemVersion.compare_options(endVersion, <span class="number">64</span>) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> timeNumb = task.valueForKey(<span class="string">"startTime"</span>);</span><br><span class="line">            <span class="keyword">if</span> (NSDate.timeIntervalSinceReferenceDate() - timeNumb &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> self.ORIG__initWithTask(task);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, &#123;&#125;);</span><br></pre></td></tr></table></figure>
+<p>问题：由于JSPatch缺少 CFRelease 的转换，导致内存泄漏。但是内存泄露总比 crash 好。</p>
+<p>那么 JSPatch是否提供了调用 C 函数的解决方案呢？</p>
+<p><a href="https://github.com/bang590/JSPatch/wiki/C-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8" target="_blank" rel="external">C 函数调用</a></p>
+<p>其中内存相关的，单独封装在了一个 JPMemory类中</p>
+<p><a href="https://github.com/bang590/JSPatch/wiki/JPMemory-%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3" target="_blank" rel="external">JPMemory 使用文档</a></p>
+<p>JSPatch 的扩展使用都需要将特定的扩展类加入的项目中，支持 cocoapods</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pod <span class="string">'JSPatch'</span></span><br><span class="line">pod <span class="string">'JSPatch/Extensions'</span></span><br><span class="line">pod <span class="string">'JSPatch/JPCFunction'</span></span><br></pre></td></tr></table></figure>
+<p>由于之前版本中没有引入相关源码，无法使用 CFRelease 函数，但是在之后的版本中可以考虑引入。</p>
+<p>参考文档：</p>
+<p><a href="http://openradar.appspot.com/28301343" target="_blank" rel="external">http://openradar.appspot.com/28301343</a></p>
+<p><a href="https://github.com/bang590/JSPatch/wiki" target="_blank" rel="external">https://github.com/bang590/JSPatch/wiki</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="unko WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="unko Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/10-2系统崩溃/" rel="tag"># 10.2系统崩溃</a>
+          
+            <a href="/tags/NSURLSessionTaskMetrics/" rel="tag"># NSURLSessionTaskMetrics</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/10/iOS简单无埋点统计的实现（一）——数据收集篇/" rel="next" title="iOS简单无埋点统计的实现（一）——数据收集篇">
+                <i class="fa fa-chevron-left"></i> iOS简单无埋点统计的实现（一）——数据收集篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="unko" />
+          <p class="site-author-name" itemprop="name">unko</p>
+           
+              <p class="site-description motion-element" itemprop="description">二也是一种生活态度</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#现象"><span class="nav-number">1.</span> <span class="nav-text">现象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地代码修复"><span class="nav-number">1.1.</span> <span class="nav-text">本地代码修复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSPatch下修复"><span class="nav-number">1.2.</span> <span class="nav-text">JSPatch下修复</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">unko</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jdVfeigycejyhEtB9zj0DqAO-gzGzoHsz", "8oTynlmScfap4jvEAPKyUDoc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

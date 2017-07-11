@@ -1,0 +1,904 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,unrecognized selector,NSMeasurement," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="杂记最近一直在写新的支付中心模块需求，没怎么准备分享内容。那么就分享下最近解决的或者是遇到的一些问题吧
+拯救 unrecognized selector
+objc 是动态语言，没个方法在运行时会被动态转为消息发送，即：objc_msgSend(receiver,selector)。
+
+objc在向一个对象发送消息时，runtime库会根据对象的isa指针找到该对象实际所属的类，然后在该类的方法列表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杂记">
+<meta property="og:url" content="http://www.unko.cn/2017/07/10/杂记/index.html">
+<meta property="og:site_name" content="unko">
+<meta property="og:description" content="杂记最近一直在写新的支付中心模块需求，没怎么准备分享内容。那么就分享下最近解决的或者是遇到的一些问题吧
+拯救 unrecognized selector
+objc 是动态语言，没个方法在运行时会被动态转为消息发送，即：objc_msgSend(receiver,selector)。
+
+objc在向一个对象发送消息时，runtime库会根据对象的isa指针找到该对象实际所属的类，然后在该类的方法列表">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fhesnmuz8oj31b00k278j.jpg">
+<meta property="og:image" content="http://read.html5.qq.com/image?src=forum&q=5&r=0&imgflag=7&imageUrl=http://mmbiz.qpic.cn/mmbiz_png/ibnDKD3ktAoYJIS62nicicpVqYtEtLgf7OKsTfB4B401fyibUX3H7AZrlRPspFkoHApQIUYRRXdsenJwMVlLF9dcHg/0?wx_fmt=png">
+<meta property="og:updated_time" content="2017-07-10T07:25:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="杂记">
+<meta name="twitter:description" content="杂记最近一直在写新的支付中心模块需求，没怎么准备分享内容。那么就分享下最近解决的或者是遇到的一些问题吧
+拯救 unrecognized selector
+objc 是动态语言，没个方法在运行时会被动态转为消息发送，即：objc_msgSend(receiver,selector)。
+
+objc在向一个对象发送消息时，runtime库会根据对象的isa指针找到该对象实际所属的类，然后在该类的方法列表">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fhesnmuz8oj31b00k278j.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.unko.cn/2017/07/10/杂记/"/>
+
+
+
+
+
+  <title> 杂记 | unko </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">unko</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">unko</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.unko.cn/2017/07/10/杂记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="unko">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="unko">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                杂记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T14:48:12+08:00">
+                2017-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/10/杂记/" class="leancloud_visitors" data-flag-title="杂记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="杂记"><a href="#杂记" class="headerlink" title="杂记"></a>杂记</h1><p>最近一直在写新的支付中心模块需求，没怎么准备分享内容。那么就分享下最近解决的或者是遇到的一些问题吧</p>
+<h2 id="拯救-unrecognized-selector"><a href="#拯救-unrecognized-selector" class="headerlink" title="拯救 unrecognized selector"></a>拯救 unrecognized selector</h2><blockquote>
+<p>objc 是动态语言，没个方法在运行时会被动态转为消息发送，即：objc_msgSend(receiver,selector)。</p>
+</blockquote>
+<p>objc在向一个对象发送消息时，runtime库会根据对象的isa指针找到该对象实际所属的类，然后在该类的方法列表中寻找方法运行，如果找不到，就在其父类方法列表中寻找，如果在最顶层的父类中依然找不到相应的方法时，程序在运行时会挂掉并抛出异常unrecognized selector sent to XXX 。但是在这之前，objc的运行时会给出三次拯救程序崩溃的机会：</p>
+<h3 id="1-Resolve-Method"><a href="#1-Resolve-Method" class="headerlink" title="1. Resolve Method"></a>1. Resolve Method</h3><p>objc 运行时会调用<code>+resolveInstanceMethod:</code>或者<code>+resolveClassMethod:</code>，让你 有机会提供一个函数实现。如果添加了函数，那运行时系统就会重新启动一次消息发送的过程，否则，运行时就会移到下一步。</p>
+<h3 id="2-forwardingTargetForSelector"><a href="#2-forwardingTargetForSelector" class="headerlink" title="2. forwardingTargetForSelector"></a>2. forwardingTargetForSelector</h3><p>如果目标对象实现了<code>-forwardingTargetForSelector:</code>，Runtime 这时就会调用这个方法，给你把这个消息转发给其他对象的机会。 只要这个方法返回的不是nil和self，整个消息发送的过程就会被重启，当然发送的对象会变成你返回的那个对象。</p>
+<h3 id="3-forwardInvocation"><a href="#3-forwardInvocation" class="headerlink" title="3. forwardInvocation"></a>3. forwardInvocation</h3><p>这一步是Runtime最后一次给你挽救的机会。首先它会发送<code>-methodSignatureForSelector:</code>消息获得函数的参数和返回值类型。如果<code>-methodSignatureForSelector:</code>返回nil，Runtime则会发出<code>-doesNotRecognizeSelector:</code>消息，程序这时也就挂掉了。如果返回了一个函数签名，Runtime就会创建一个NSInvocation对象并发送<code>-forwardInvocation:</code>消息给目标对象。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fhesnmuz8oj31b00k278j.jpg" alt="流程"></p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="方案一-forwardingTargetForSelector"><a href="#方案一-forwardingTargetForSelector" class="headerlink" title="方案一: forwardingTargetForSelector"></a>方案一: forwardingTargetForSelector</h4><p><code>forwardingTargetForSelector</code>，可以将NSObject的该方法重写，做以下几步的处理：</p>
+<ol>
+<li>动态创建一个桩类</li>
+<li>动态为桩类添加对应的Selector，用一个通用的返回0的函数来实现该SEL的IMP</li>
+<li>将消息直接转发到这个桩类对象上。</li>
+</ol>
+<p>流程图如下：</p>
+<p><img src="http://read.html5.qq.com/image?src=forum&amp;q=5&amp;r=0&amp;imgflag=7&amp;imageUrl=http://mmbiz.qpic.cn/mmbiz_png/ibnDKD3ktAoYJIS62nicicpVqYtEtLgf7OKsTfB4B401fyibUX3H7AZrlRPspFkoHApQIUYRRXdsenJwMVlLF9dcHg/0?wx_fmt=png" alt="img"></p>
+<p>优点：</p>
+<ol>
+<li><code>resolveInstanceMethod</code>需要在类的本身上动态添加它本身不存在的方法，这些方法对于该类本身来说冗余的</li>
+<li><code>forwardInvocation:</code>可以通过NSInvocation的形式将消息转发给多个对象，但是其开销较大，需要创建新的NSInvocation对象，并且<code>forwardInvocation:</code>的函数经常被使用者调用，来做多层消息转发选择机制，不适合多次重写</li>
+<li><code>forwardingTargetForSelector:</code>可以将消息转发给一个对象，开销较小，并且被重写的概率较低，适合重写</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li><p>如果对象的类本事重写了<code>forwardInvocation:</code>方法的话，如果使用<code>forwardingTargetForSelector:</code>会影响到该类型的对象原本的消息转发流程。</p>
+</li>
+<li><p>一些系统方法如：<code>getServerAnswerForQuestion:reply:</code>、</p>
+<p><code>startArbitrationWithExpectedState:hostingPIDs:withSuppression:onConnected:</code>、</p>
+<p><code>_setTextColor:</code>、<code>setPresentationContextPrefersCancelActionShown:</code>  也会拦截到。本来这些函数系统会自己处理的，相当于这块儿的拦截超前了。</p>
+</li>
+</ol>
+<h4 id="方案二-forwardInvocation"><a href="#方案二-forwardInvocation" class="headerlink" title="方案二: forwardInvocation"></a>方案二: forwardInvocation</h4><p>在调用<code>methodSignatureForSelector:</code>时返回<strong>桩类</strong>的方法签名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">@interface  UnrecognizedSelectorProxyObject : NSObject</span><br><span class="line">+ (instancetype) sharedInstance;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation UnrecognizedSelectorProxyObject</span><br><span class="line">+ (instancetype) sharedInstance&#123;</span><br><span class="line">    </span><br><span class="line">    static UnrecognizedSelectorProxyObject *instance=nil;</span><br><span class="line">    static dispatch_once_t once_token;</span><br><span class="line">    dispatch_once(&amp;once_token, ^&#123;</span><br><span class="line">        instance = [[UnrecognizedSelectorProxyObject alloc] init];</span><br><span class="line">    &#125;);</span><br><span class="line">    return instance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)selector &#123;</span><br><span class="line">    class_addMethod([self class], selector,(IMP)emptyMethodIMP,&quot;v@:&quot;);</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void emptyMethodIMP() &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation NSObject (SelectorCrashProtect)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">+ (void)selectorCrashProtectSwizzle &#123;</span><br><span class="line">    static dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">        CrashProtectToolSwizzleInstanceMethod([self class], @selector(methodSignatureForSelector:), @selector(crashProtectMethodSignatureForSelector:));</span><br><span class="line">        CrashProtectToolSwizzleInstanceMethod([self class], @selector(forwardInvocation:), @selector(crashProtectForwardInvocation:));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSMethodSignature *)crashProtectMethodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    NSMethodSignature * signature = [self crashProtectMethodSignatureForSelector:aSelector];</span><br><span class="line">    if (!signature) &#123;</span><br><span class="line">        signature = [[UnrecognizedSelectorProxyObject sharedInstance] crashProtectMethodSignatureForSelector:aSelector];</span><br><span class="line">    &#125;</span><br><span class="line">    return signature;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)crashProtectForwardInvocation:(NSInvocation *)anInvocation &#123;</span><br><span class="line">    </span><br><span class="line">    @try &#123;</span><br><span class="line">        [self crashProtectForwardInvocation:anInvocation];</span><br><span class="line">    &#125; @catch (NSException *exception) &#123;</span><br><span class="line">        [CrashProtect postExceptionNotification:exception];</span><br><span class="line">        [anInvocation invokeWithTarget:[UnrecognizedSelectorProxyObject sharedInstance]];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>CrashProtectSDK中我们使用了方案二来实现，最最重要的原因还是因为方案一中系统函数的问题，我们没法确定哪些系统函数回来调用。</p>
+<h2 id="单位转换"><a href="#单位转换" class="headerlink" title="单位转换"></a>单位转换</h2><p>最近在开发新支付模块的时候，支付页面增加了一个倒计时的显示。</p>
+<p>很自然的,我们是这样计算分秒的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSInteger min = remainSecond / 60;</span><br><span class="line">NSInteger sec = remainSecond % 60;</span><br></pre></td></tr></table></figure>
+<p>但是在 iOS 10后苹果提供了一个叫做 NSMeasurement的类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//秒</span><br><span class="line">NSMeasurement *seconds = [[NSMeasurement alloc] initWithDoubleValue:remainSecond unit:NSUnitDuration.seconds];</span><br><span class="line">//分</span><br><span class="line">NSMeasurement *minutes = [seconds measurementByConvertingToUnit:NSUnitDuration.minutes];</span><br><span class="line">//小时</span><br><span class="line">NSMeasurement *hours   = [seconds measurementByConvertingToUnit:NSUnitDuration.hours];</span><br><span class="line"></span><br><span class="line">NSString *secondsString = [NSString stringWithFormat:@&quot;%.2f 秒&quot;, seconds.doubleValue];</span><br><span class="line">NSString *minutesString = [NSString stringWithFormat:@&quot;%.2f 分钟&quot;, minutes.doubleValue];</span><br><span class="line">NSString *hoursString   = [NSString stringWithFormat:@&quot;%.2f 小时&quot;, hours.doubleValue];</span><br></pre></td></tr></table></figure>
+<h4 id="支持换算单位的类型"><a href="#支持换算单位的类型" class="headerlink" title="支持换算单位的类型"></a>支持换算单位的类型</h4><ul>
+<li>NSDimension 维度</li>
+<li>NSUnitAcceleration 每秒/平方米</li>
+<li>NSUnitAngle 角度</li>
+<li>NSUnitArea 平方米</li>
+<li>NSUnitConcentrationMass 每克/升</li>
+<li>NSUnitDispersion 百万分之</li>
+<li>NSUnitDuration 秒</li>
+<li>NSUnitElectricCharge 库仑</li>
+<li>NSUnitElectricCurrent 安培</li>
+<li>NSUnitElectricPotentialDifference 伏</li>
+<li>NSUnitElectricResistance 欧姆</li>
+<li>NSUnitEnergy 焦耳</li>
+<li>NSUnitFrequency 赫兹</li>
+<li>NSUnitFuelEfficiency 升/每100公里</li>
+<li>NSUnitLength 米</li>
+<li>NSUnitIlluminance 公斤</li>
+<li>NSUnitPower 美国瓦茨</li>
+<li>NSUnitPressure 牛顿/每平方米</li>
+<li>NSUnitSpeed 秒/米</li>
+<li>NSUnitTemperature 开尔文</li>
+<li>NSUnitVolume 升</li>
+</ul>
+<p>因为是 iOS 10 才有的特性，所以项目中没有用上，还是乖乖的用了老办法来算分秒。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>很多新特性在项目中不一定要使用，但是作为开发者必须要尽可能的去了解。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="unko WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="unko Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/unrecognized-selector/" rel="tag"># unrecognized selector</a>
+          
+            <a href="/tags/NSMeasurement/" rel="tag"># NSMeasurement</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/14/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/10/iOS简单无埋点统计的实现（一）——数据收集篇/" rel="prev" title="iOS简单无埋点统计的实现（一）——数据收集篇">
+                iOS简单无埋点统计的实现（一）——数据收集篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="unko" />
+          <p class="site-author-name" itemprop="name">unko</p>
+           
+              <p class="site-description motion-element" itemprop="description">二也是一种生活态度</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#杂记"><span class="nav-number">1.</span> <span class="nav-text">杂记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#拯救-unrecognized-selector"><span class="nav-number">1.1.</span> <span class="nav-text">拯救 unrecognized selector</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Resolve-Method"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. Resolve Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-forwardingTargetForSelector"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. forwardingTargetForSelector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-forwardInvocation"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. forwardInvocation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">1.1.4.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案一-forwardingTargetForSelector"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">方案一: forwardingTargetForSelector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案二-forwardInvocation"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">方案二: forwardInvocation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单位转换"><span class="nav-number">1.2.</span> <span class="nav-text">单位转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#支持换算单位的类型"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">支持换算单位的类型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">1.3.</span> <span class="nav-text">最后</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">unko</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jdVfeigycejyhEtB9zj0DqAO-gzGzoHsz", "8oTynlmScfap4jvEAPKyUDoc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -5,8 +5,8 @@
 # Site
 title: unko
 subtitle: unko
-description:
-author: unko sun
+description: 二也是一种生活态度
+author: unko
 language: zh-Hans
 timezone:
 
@@ -63,7 +63,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: yelee
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
