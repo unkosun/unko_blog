@@ -1,0 +1,867 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="在我们的日常开发过程常常会遇到一些莫名其妙的问题，如何定位这些问题呢？就需要调试了。其中断点调试是我们日常开发过程中用到得最最常用的手段。 断点介绍断点类型  一般断点 特殊断点  一、 一般断点一般断点：通过在代码行号前点击鼠标或者快捷键“command+\”打下的断点。 条件断点给断点设置一个条件，当条件满足后，断点才生效。 12345- (void)testConditionBreakPoi">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xcode断点调试">
+<meta property="og:url" content="http://www.unko.cn/2019/01/11/Xcode断点调试/index.html">
+<meta property="og:site_name" content="unko">
+<meta property="og:description" content="在我们的日常开发过程常常会遇到一些莫名其妙的问题，如何定位这些问题呢？就需要调试了。其中断点调试是我们日常开发过程中用到得最最常用的手段。 断点介绍断点类型  一般断点 特殊断点  一、 一般断点一般断点：通过在代码行号前点击鼠标或者快捷键“command+\”打下的断点。 条件断点给断点设置一个条件，当条件满足后，断点才生效。 12345- (void)testConditionBreakPoi">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fsodubfbc9j30qg0840vk.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1fsoduh5e79j30pu09ijty.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcgy1fsppvnsjjmj30qg07ygmz.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1fspr0fztokj30gm0mg429.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcgy1fsqtgmb427j30p409atb0.jpg">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1613923-f13b2dd8c4806b65.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/519">
+<meta property="og:updated_time" content="2019-01-11T06:45:13.700Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xcode断点调试">
+<meta name="twitter:description" content="在我们的日常开发过程常常会遇到一些莫名其妙的问题，如何定位这些问题呢？就需要调试了。其中断点调试是我们日常开发过程中用到得最最常用的手段。 断点介绍断点类型  一般断点 特殊断点  一、 一般断点一般断点：通过在代码行号前点击鼠标或者快捷键“command+\”打下的断点。 条件断点给断点设置一个条件，当条件满足后，断点才生效。 12345- (void)testConditionBreakPoi">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tKfTcgy1fsodubfbc9j30qg0840vk.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.unko.cn/2019/01/11/Xcode断点调试/"/>
+
+
+
+
+
+  <title> Xcode断点调试 | unko </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">unko</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">unko</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.unko.cn/2019/01/11/Xcode断点调试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="unko">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="unko">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Xcode断点调试
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-11T14:41:19+08:00">
+                2019-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/01/11/Xcode断点调试/" class="leancloud_visitors" data-flag-title="Xcode断点调试">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在我们的日常开发过程常常会遇到一些莫名其妙的问题，如何定位这些问题呢？就需要调试了。其中断点调试是我们日常开发过程中用到得最最常用的手段。</p>
+<h2 id="断点介绍"><a href="#断点介绍" class="headerlink" title="断点介绍"></a>断点介绍</h2><p>断点类型</p>
+<ol>
+<li>一般断点</li>
+<li>特殊断点</li>
+</ol>
+<h3 id="一、-一般断点"><a href="#一、-一般断点" class="headerlink" title="一、 一般断点"></a>一、 一般断点</h3><p>一般断点：通过在代码行号前点击鼠标或者快捷键“command+\”打下的断点。</p>
+<h4 id="条件断点"><a href="#条件断点" class="headerlink" title="条件断点"></a>条件断点</h4><p>给断点设置一个条件，当条件满足后，断点才生效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (void)testConditionBreakPoint &#123;</div><div class="line">    for (int i = 0; i&lt;100; ++i) &#123;</div><div class="line">        NSLog(@&quot;%d&quot;,i);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fsodubfbc9j30qg0840vk.jpg" alt="image-20180625111748528"></p>
+<p>上图中的条件断点，余数为1的断点都会生效。</p>
+<h4 id="断点编辑"><a href="#断点编辑" class="headerlink" title="断点编辑"></a>断点编辑</h4><p><strong>Condition</strong>:指的是条件表达式，该项允许我们对断点生效设置条件，表示当满足某一特定条件的前提下，该断点才生效。（该条件的录入，不能够识别预处理的宏定义，也不能识别断点作用域之外的变量和方法）。</p>
+<p><strong>Ignore</strong>：忽略次数。它指定了在断点生效，应用暂停之前，代码忽略断点的次数。你如果希望应用运行一段时间后断点才生效，那么就可以使用这个选项。比如说在调试某一循环体的时候。</p>
+<p><strong>Action</strong>:动作。它表示当断点生效时，Xcode作出反应后的行为动作。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fsoduh5e79j30pu09ijty.jpg" alt="image-20180626091237553"></p>
+<p>如上图，我们可以看到6种Action，接下来我们来介绍下常用的几种：</p>
+<p><strong>Sound</strong>：断点触发是会发出声音提醒。</p>
+<p><strong>Capture GPU Frame</strong> ：当断点生效时，捕获GPU当前所绘制的帧。该功能是辅助图形调试的。平常很少用到，不是很了解，就不详细介绍了</p>
+<p><strong>AppleScript</strong>: AppleScript是苹果提供的一种脚本语言，用来执行一些预先指定的行为。</p>
+<p><strong>Shell Command</strong>: 在断点生效的时候，执行一段shell脚本。</p>
+<p><strong>Debugger Command</strong>:</p>
+<p>可以在断点中使用lldb命令，例如：<code>po i</code> ,<code>expr NSLog(@&quot;Ok, print a log: %d&quot;,i)</code>,<code>bt</code></p>
+<p><strong>Log Message</strong>: 打印日志，可以将日志输出到控制台，或者播报。</p>
+<p>此处看demo代码</p>
+<h4 id="组合使用"><a href="#组合使用" class="headerlink" title="组合使用"></a>组合使用</h4><p>Condition和Ignore是否可以一起使用，而同时生效？</p>
+<h4 id="二、特殊断点"><a href="#二、特殊断点" class="headerlink" title="二、特殊断点"></a>二、特殊断点</h4><h4 id="1-异常断点（Exception-Breakpoint）"><a href="#1-异常断点（Exception-Breakpoint）" class="headerlink" title="1.  异常断点（Exception Breakpoint）"></a>1.  异常断点（Exception Breakpoint）</h4><p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fsppvnsjjmj30qg07ygmz.jpg" alt="image-20180627142419767"></p>
+<p><strong>Exception</strong> :可以让你选择响应Objective－C对象抛出的异常，也可以选择响应C++对象抛出的异常。</p>
+<p><strong>Break</strong>:选择断点所接收的异常，是接收<code>Throw</code>语句抛出的异常还是<code>Catch</code>语句的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (void)testExceptionOnThrowBreakPoint &#123;</div><div class="line">    NSException * exception = [NSException exceptionWithName:@&quot;自定义异常&quot; reason:@&quot;我就想抛异常&quot; userInfo:nil];</div><div class="line">    @throw exception;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们选择Break为 <strong>On Throw</strong>,可以看到异常断点生效，在左侧的调用堆栈中可以看到<code>objc_exception_throw</code></p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1fspr0fztokj30gm0mg429.jpg" alt="image-20180627150336155"></p>
+<p>如果我们将Break设置为<strong>On Catch</strong>时，就无法捕获到异常。</p>
+<h4 id="符号断点（Symbolic-Breakpoint）"><a href="#符号断点（Symbolic-Breakpoint）" class="headerlink" title="符号断点（Symbolic Breakpoint）"></a>符号断点（Symbolic Breakpoint）</h4><p>他可以中断某个方法的调用，可谓是异常强大，在断点导航器界面，点击＋号，选择Symbolic Breakpoint选项。</p>
+<p>大家可以看到它比普通断点的自定义设置界面多出了两个内容，其一是<strong>Symbol</strong>，他用来设置当前断点作用域所能识别的方法，这里面既可以是自定义的方法，也可以是系统的API方法。（注意必须表明是类方法还是成员方法）</p>
+<p>另一个<strong>Module</strong>是模块的意思，用于模块筛选，可以避免不同库中方法名或者函数名相同。</p>
+<p> <img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fsqtgmb427j30p409atb0.jpg" alt="symbolic breakpoint"></p>
+<p>大家在写UI代码做约束布局的时候，经常可以再控制台看到如下日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">2018-07-03 08:58:32.876523+0800 同城游[1142:1418156] [LayoutConstraints] Unable to simultaneously satisfy constraints.</div><div class="line">	Probably at least one of the constraints in the following list is one you don&apos;t want. </div><div class="line">	Try this: </div><div class="line">		(1) look at each constraint and try to figure out which you don&apos;t expect; </div><div class="line">		(2) find the code that added the unwanted constraint or constraints and fix it. </div><div class="line">(</div><div class="line">    &quot;&lt;MASLayoutConstraint:0x1c40afde0 UIButton:0x10940a0f0.left == GCAddFriendHeaderView:0x109409cf0.left + 12&gt;&quot;,</div><div class="line">    &quot;&lt;MASLayoutConstraint:0x1c40afe40 UIButton:0x10940a0f0.right == GCAddFriendHeaderView:0x109409cf0.right - 12&gt;&quot;,</div><div class="line">    &quot;&lt;NSLayoutConstraint:0x1d04863b0 GCAddFriendHeaderView:0x109409cf0.width == 0&gt;&quot;</div><div class="line">)</div><div class="line"></div><div class="line">Will attempt to recover by breaking constraint </div><div class="line">&lt;MASLayoutConstraint:0x1c40afe40 UIButton:0x10940a0f0.right == GCAddFriendHeaderView:0x109409cf0.right - 12&gt;</div><div class="line"></div><div class="line">Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.</div><div class="line">The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in &lt;UIKit/UIView.h&gt; may also be helpful.</div></pre></td></tr></table></figure>
+<p>那么我们按照提示来增加一个符号断点：UIViewAlertForUnsatisfiableConstraints</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1613923-f13b2dd8c4806b65.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/519" alt="UIViewAlertForUnsatisfiableConstraints"></p>
+<p>同时设置<strong>Action</strong>为<strong>Debugger Command</strong>, <code>po [[UIWindow keyWindow] _autolayoutTrace]</code></p>
+<p>使用<code>po [[UIWindow keyWindow] _autolayoutTrace]</code>可以将window中的自动布局的view层级打印出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div></pre></td><td class="code"><pre><div class="line">•UIWindow:0x1091e7140 - AMBIGUOUS LAYOUT</div><div class="line">|   •UILayoutContainerView:0x11890efb0</div><div class="line">|   |   UINavigationTransitionView:0x118912e90</div><div class="line">|   |   |   UIViewControllerWrapperView:0x118924930</div><div class="line">|   |   |   |   UIView:0x10951a8c0</div><div class="line">|   |   |   |   |   UILayoutContainerView:0x1090120f0</div><div class="line">|   |   |   |   |   |   UITransitionView:0x108605aa0</div><div class="line">|   |   |   |   |   |   |   UIViewControllerWrapperView:0x10860cc50</div><div class="line">|   |   |   |   |   |   |   |   •UIView:0x10950fbb0</div><div class="line">|   |   |   |   |   |   |   |   |   +GCNavSegmentedView:0x10950fd90</div><div class="line">|   |   |   |   |   |   |   |   |   |   +UIView:0x109510890</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   +UIButton:0x109510b40&apos;消息&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x109510e60&apos;消息&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   +UIButton:0x109511150&apos;好友&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x109511470&apos;好友&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   UIView:0x109511760</div><div class="line">|   |   |   |   |   |   |   |   |   UIScrollView:0x10d81ea00</div><div class="line">|   |   |   |   |   |   |   |   |   |   •UIView:0x109512720</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   *&lt;UILayoutGuide: 0x1cc1a2220 - &quot;UIViewSafeAreaLayoutGuide&quot;, layoutFrame = &#123;&#123;0, 0&#125;, &#123;375, 596&#125;&#125;, owningView = &lt;UIView: 0x109512720; frame = (0 0; 375 596); autoresize = H; layer = &lt;CALayer: 0x1c0030680&gt;&gt;&gt;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   *UIView:0x1090143d0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   *UITableView:0x10d822400</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   GCNotificationListCell:0x10a20b800&apos;GCNotificationListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   •UITableViewCellContentView:0x113b346b0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x113b607b0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b9aa10</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x109165a60</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b67e50</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b6d340&apos;平台公告&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x109174f60&apos;6月22日&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x1091faf10&apos;等待&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b554d0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   GCNotificationListCell:0x10a1cc800&apos;GCNotificationListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   •UITableViewCellContentView:0x1091dfa30</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x113b29070</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b31a00</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x113b5e610</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b23a90</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x1091e2750&apos;帐号测试02&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b4c840&apos;2018/06/27&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x1091605c0&apos;图&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b41970</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x1091077a0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   UIView:0x10950f370</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   UIView:0x109510690</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   UIImageView:0x113b4d990</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   UIView:0x113b88820</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   UIImageView:0x113b4d720</div><div class="line">|   |   |   |   |   |   |   |   |   |   •UIView:0x10860a350</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   *&lt;UILayoutGuide: 0x1c81a1ea0 - &quot;UIViewSafeAreaLayoutGuide&quot;, layoutFrame = &#123;&#123;0, 0&#125;, &#123;375, 596&#125;&#125;, owningView = &lt;UIView: 0x10860a350; frame = (375 0; 375 596); autoresize = H; layer = &lt;CALayer: 0x1c8028b40&gt;&gt;&gt;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   *UIView:0x10860af00</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   *UITableView:0x108813e00</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   •GCFriendListCell:0x10a233a00&apos;GCFriendListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   +UITableViewCellContentView:0x113b932b0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b912f0&apos;咋个家常菜&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b93830&apos;离线&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIButton:0x113b97f90&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x113b9b750&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x113b93cf0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b95d00</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x113b92850</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b94330</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x113b9ca20</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   _UITableViewCellSeparatorView:0x113b92cb0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b9ba80&apos;已求过&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   •GCFriendListCell:0x10a204000&apos;GCFriendListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   +UITableViewCellContentView:0x113b84200</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b3c890&apos;zzkk&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b3ce10&apos;离线&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIButton:0x113b84740&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x113b8c5e0&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x113b84c00</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b86c10</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x113b7d5a0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b7d200</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x113b8ae60</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   _UITableViewCellSeparatorView:0x113b83c90</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b8c910&apos;已求过&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   •GCFriendListCell:0x10a210e00&apos;GCFriendListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   +UITableViewCellContentView:0x109188840</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x109161250&apos;zzff&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x109187d00&apos;离线&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIButton:0x113b7c160&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x113b5aa90&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x113b5e3b0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b5b1f0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x10918de00</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b50740</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x113b53600</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   _UITableViewCellSeparatorView:0x10915e530</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b52c30&apos;已求过&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   •GCFriendListCell:0x10a209e00&apos;GCFriendListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   +UITableViewCellContentView:0x109165ee0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b57fc0&apos;杨鑫誉&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x109166520&apos;离线&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIButton:0x113b57640&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x113b3f7a0&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x113b57960</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x1091099e0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x109166800</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b572a0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x113b40a70</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   _UITableViewCellSeparatorView:0x113b52710</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b3fad0&apos;已求过&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   •GCFriendListCell:0x10a038800&apos;GCFriendListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   +UITableViewCellContentView:0x113b1f9b0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b7b740&apos;邬翰羿&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x1091efca0&apos;离线&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIButton:0x113b82ab0&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x113b51dd0&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x113b7f5f0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b5ce50</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x109166f20</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b61840</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x10915e110</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   _UITableViewCellSeparatorView:0x113b3bb10</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b28c90&apos;已求过&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   •GCFriendListCell:0x10a1d8c00&apos;GCFriendListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   +UITableViewCellContentView:0x113b6bc70</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x109184ba0&apos;裘糜冰珍&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x10910d050&apos;离线&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIButton:0x113b1d3a0&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x113b1cf90&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x109174ac0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x113b1cc10</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x109181e20</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x109184480</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x109183880</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   _UITableViewCellSeparatorView:0x113b115c0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b288b0&apos;已求过&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   •GCFriendListCell:0x10a839e00&apos;GCFriendListCell&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   +UITableViewCellContentView:0x109230150</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x1092dd380&apos;萧山晴霞&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x10923b380&apos;台州麻将 游戏中&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIButton:0x10923b660&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x11891e9e0&apos;跟随&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *GCAvatarFrameView:0x10923b980</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x109204db0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x109204fe0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x1092bd930</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x118922500</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   _UITableViewCellSeparatorView:0x1092bdb60</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x1092d5c60&apos;已求过&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   GCAddFriendTableViewCell:0x10aa46800&apos;GCAddFriendTableViewCell_...&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   •UITableViewCellContentView:0x1092e5c60</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x118924620</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x11891bf50&apos;新的好友&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIImageView:0x1189817d0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x10923a360</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x1189812f0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   UIView:0x118903660</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   •UIView:0x113b7cca0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UILabel:0x113b9a550&apos;我的好友&apos;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   |   *UIView:0x113b9d930</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   UIImageView:0x113b623f0</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   |   |   UIImageView:0x113b630f0</div><div class="line">|   |   |   |   |   |   |   |   |   |   UIImageView:0x113b4ebc0</div><div class="line">|   |   |   |   |   |   UITabBar:0x1090122f0</div><div class="line">|   |   |   |   |   |   |   _UIBarBackground:0x108605f90</div><div class="line">|   |   |   |   |   |   |   |   UIImageView:0x1086061f0</div><div class="line">|   |   |   |   |   |   |   |   UIImageView:0x108606420</div><div class="line">|   |   |   |   |   |   |   UITabBarButton:0x1086076f0</div><div class="line">|   |   |   |   |   |   |   |   UITabBarSwappableImageView:0x108607c00</div><div class="line">|   |   |   |   |   |   |   UITabBarButton:0x108608050</div><div class="line">|   |   |   |   |   |   |   |   UITabBarSwappableImageView:0x108608560</div><div class="line">|   |   |   |   |   |   |   UITabBarButton:0x1086087b0</div><div class="line">|   |   |   |   |   |   |   |   UITabBarSwappableImageView:0x108608ac0</div><div class="line">|   |   |   |   |   |   |   UITabBarButton:0x109407cc0</div><div class="line">|   |   |   |   |   |   |   |   UITabBarSwappableImageView:0x109407fd0</div><div class="line">|   |   |   |   |   |   |   UIView:0x113b0cbb0</div><div class="line">|   |   |   |   |   |   |   UIView:0x113b17330</div><div class="line">|   |   |   |   |   |   UINavigationBar:0x109513fb0</div><div class="line">|   |   |   |   _UIParallaxDimmingView:0x10940c0b0</div><div class="line">|   |   |   |   UIView:0x10951a6e0</div><div class="line">|   |   |   |   |   _UIParallaxDimmingView:0x10940c4b0</div><div class="line">|   |   |   |   |   |   UIImageView:0x10940ca70</div><div class="line">|   |   |   |   |   |   •UIView:0x108602400, MISSING HOST CONSTRAINTS</div><div class="line">|   |   |   |   |   |   |   *&lt;UILayoutGuide: 0x1c81a1ce0 - &quot;UIViewSafeAreaLayoutGuide&quot;, layoutFrame = &#123;&#123;0, 88&#125;, &#123;375, 690&#125;&#125;, owningView = &lt;UIView: 0x108602400; frame = (0 0; 375 812); autoresize = W+H; layer = &lt;CALayer: 0x1c8027ca0&gt;&gt;&gt;- AMBIGUOUS LAYOUT for UILayoutGuide:0x1c81a1ce0&apos;UIViewSafeAreaLayoutGuide&apos;.minX&#123;id: 4441&#125;, UILayoutGuide:0x1c81a1ce0&apos;UIViewSafeAreaLayoutGuide&apos;.minY&#123;id: 4438&#125;, UILayoutGuide:0x1c81a1ce0&apos;UIViewSafeAreaLayoutGuide&apos;.Width&#123;id: 4448&#125;, UILayoutGuide:0x1c81a1ce0&apos;UIViewSafeAreaLayoutGuide&apos;.Height&#123;id: 4445&#125;</div><div class="line">|   |   |   |   |   |   |   *UIView:0x10860e090</div><div class="line">|   |   |   |   |   |   |   |   *UITableView:0x10d014c00</div><div class="line">|   |   |   |   |   |   |   |   |   UIView:0x109409b10</div><div class="line">|   |   |   |   |   |   |   |   |   •GCAddFriendHeaderView:0x109409cf0</div><div class="line">|   |   |   |   |   |   |   |   |   |   *UIButton:0x10940a0f0&apos; 请输入同城游序号/昵称/手机号&apos;- AMBIGUOUS LAYOUT for UIButton:0x10940a0f0&apos; 请输入同城游序号/昵称/手机号&apos;.minY&#123;id: 4475&#125;</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   UIImageView:0x1092c3580</div><div class="line">|   |   |   |   |   |   |   |   |   |   |   UIButtonLabel:0x10940a410</div><div class="line">|   |   |   |   |   |   |   |   |   UIImageView:0x109516990</div><div class="line">|   |   |   |   |   |   |   |   |   UIImageView:0x109516bc0</div><div class="line">|   |   +UINavigationBar:0x11890f1b0</div><div class="line">|   |   |   _UIBarBackground:0x11890f470</div><div class="line">|   |   |   |   UIImageView:0x11890f6d0</div><div class="line">|   |   |   |   UIImageView:0x11890f900</div><div class="line">|   |   |   _UINavigationBarLargeTitleView:0x118910210&apos;添加好友&apos;</div><div class="line">|   |   |   |   UILabel:0x118910730</div><div class="line">|   |   |   |   UILabel:0x113bb9bb0</div><div class="line">|   |   |   •_UINavigationBarContentView:0x11890ff60&apos;添加好友&apos;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1d09bd260 - &quot;BackButtonGuide(0x11890ee00)&quot;, layoutFrame = &#123;&#123;0, 0&#125;, &#123;8, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1d09bd0a0 - &quot;LeadingBarGuide(0x11890ee00)&quot;, layoutFrame = &#123;&#123;8, 0&#125;, &#123;0, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1d09bcfc0 - &quot;TitleView(0x11890ee00)&quot;, layoutFrame = &#123;&#123;8, 0&#125;, &#123;334, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1d09bcee0 - &quot;TrailingBarGuide(0x11890ee00)&quot;, layoutFrame = &#123;&#123;342, 0&#125;, &#123;17, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1d09bce00 - &quot;UIViewLayoutMarginsGuide&quot;, layoutFrame = &#123;&#123;16, 0&#125;, &#123;343, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1c01a1500 - &quot;BackButtonGuide(0x109518800)&quot;, layoutFrame = &#123;&#123;0, 0&#125;, &#123;16, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1c01a1ce0 - &quot;LeadingBarGuide(0x109518800)&quot;, layoutFrame = &#123;&#123;16, 0&#125;, &#123;44, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1c01a1dc0 - &quot;TitleView(0x109518800)&quot;, layoutFrame = &#123;&#123;60, 0&#125;, &#123;307, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *&lt;UILayoutGuide: 0x1c01a1ea0 - &quot;TrailingBarGuide(0x109518800)&quot;, layoutFrame = &#123;&#123;367, 0&#125;, &#123;0, 44&#125;&#125;, owningView = &lt;_UINavigationBarContentView: 0x11890ff60; frame = (0 0; 375 44); layer = &lt;CALayer: 0x1d063df80&gt;&gt;&gt;</div><div class="line">|   |   |   |   *_UIButtonBarStackView:0x113b5df90</div><div class="line">|   |   |   |   |   *&lt;UILayoutGuide: 0x1d41a86c0 - &quot;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&quot;, layoutFrame = &#123;&#123;-16, 0&#125;, &#123;8, 0&#125;&#125;, owningView = &lt;_UIButtonBarStackView: 0x113b5df90; frame = (16 0; 44 44); alpha = 0; layer = &lt;CALayer: 0x1d422e560&gt;&gt;&gt;- AMBIGUOUS LAYOUT for UILayoutGuide:0x1d41a86c0&apos;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&apos;.minX&#123;id: 4582&#125;, UILayoutGuide:0x1d41a86c0&apos;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&apos;.minY&#123;id: 4583&#125;, UILayoutGuide:0x1d41a86c0&apos;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&apos;.Width&#123;id: 4506&#125;, UILayoutGuide:0x1d41a86c0&apos;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&apos;.Height&#123;id: 4584&#125;</div><div class="line">|   |   |   |   |   *&lt;UILayoutGuide: 0x1d41a87a0 - &quot;UIButtonBar.minimumInterItemSpaceLayoutGuide&quot;, layoutFrame = &#123;&#123;-16, 0&#125;, &#123;8, 0&#125;&#125;, owningView = &lt;_UIButtonBarStackView: 0x113b5df90; frame = (16 0; 44 44); alpha = 0; layer = &lt;CALayer: 0x1d422e560&gt;&gt;&gt;- AMBIGUOUS LAYOUT for UILayoutGuide:0x1d41a87a0&apos;UIButtonBar.minimumInterItemSpaceLayoutGuide&apos;.minX&#123;id: 4585&#125;, UILayoutGuide:0x1d41a87a0&apos;UIButtonBar.minimumInterItemSpaceLayoutGuide&apos;.minY&#123;id: 4586&#125;, UILayoutGuide:0x1d41a87a0&apos;UIButtonBar.minimumInterItemSpaceLayoutGuide&apos;.Height&#123;id: 4587&#125;</div><div class="line">|   |   |   |   |   *&lt;UILayoutGuide: 0x1d41a6040 - &quot;UIButtonBar.minimumInterGroupSpaceLayoutGuide&quot;, layoutFrame = &#123;&#123;-16, 0&#125;, &#123;8, 0&#125;&#125;, owningView = &lt;_UIButtonBarStackView: 0x113b5df90; frame = (16 0; 44 44); alpha = 0; layer = &lt;CALayer: 0x1d422e560&gt;&gt;&gt;- AMBIGUOUS LAYOUT for UILayoutGuide:0x1d41a6040&apos;UIButtonBar.minimumInterGroupSpaceLayoutGuide&apos;.minX&#123;id: 4588&#125;, UILayoutGuide:0x1d41a6040&apos;UIButtonBar.minimumInterGroupSpaceLayoutGuide&apos;.minY&#123;id: 4589&#125;, UILayoutGuide:0x1d41a6040&apos;UIButtonBar.minimumInterGroupSpaceLayoutGuide&apos;.Height&#123;id: 4590&#125;</div><div class="line">|   |   |   |   |   *&lt;UILayoutGuide: 0x1d41a85e0 - &quot;UIViewLayoutMarginsGuide&quot;, layoutFrame = &#123;&#123;0, 0&#125;, &#123;44, 44&#125;&#125;, owningView = &lt;_UIButtonBarStackView: 0x113b5df90; frame = (16 0; 44 44); alpha = 0; layer = &lt;CALayer: 0x1d422e560&gt;&gt;&gt;</div><div class="line">|   |   |   |   |   *_UITAMICAdaptorView:0x113bba900</div><div class="line">|   |   |   |   |   |   UIButton:0x10940abb0&apos; 返回&apos;</div><div class="line">|   |   |   |   |   |   |   UIImageView:0x113bbc9a0</div><div class="line">|   |   |   |   |   |   |   UIButtonLabel:0x113bbcd00&apos; 返回&apos;</div><div class="line">|   |   |   |   +UIView:0x1092be070</div><div class="line">|   |   |   |   |   *UILabel:0x113bba2e0&apos;添加好友&apos;</div><div class="line">|   |   |   |   *_UIButtonBarStackView:0x1189125f0</div><div class="line">|   |   |   |   |   *&lt;UILayoutGuide: 0x1d09bc2a0 - &quot;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&quot;, layoutFrame = &#123;&#123;-342, 0&#125;, &#123;8, 0&#125;&#125;, owningView = &lt;_UIButtonBarStackView: 0x1189125f0; frame = (342 0; 17 44); layer = &lt;CALayer: 0x1d0622460&gt;&gt;&gt;- AMBIGUOUS LAYOUT for UILayoutGuide:0x1d09bc2a0&apos;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&apos;.minX&#123;id: 1431&#125;, UILayoutGuide:0x1d09bc2a0&apos;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&apos;.minY&#123;id: 1432&#125;, UILayoutGuide:0x1d09bc2a0&apos;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&apos;.Width&#123;id: 784&#125;, UILayoutGuide:0x1d09bc2a0&apos;UIButtonBar.flexibleSpaceEqualSizeLayoutGuide&apos;.Height&#123;id: 1433&#125;</div><div class="line">|   |   |   |   |   *&lt;UILayoutGuide: 0x1d09bf560 - &quot;UIButtonBar.minimumInterItemSpaceLayoutGuide&quot;, layoutFrame = &#123;&#123;-342, 0&#125;, &#123;8, 0&#125;&#125;, owningView = &lt;_UIButtonBarStackView: 0x1189125f0; frame = (342 0; 17 44); layer = &lt;CALayer: 0x1d0622460&gt;&gt;&gt;- AMBIGUOUS LAYOUT for UILayoutGuide:0x1d09bf560&apos;UIButtonBar.minimumInterItemSpaceLayoutGuide&apos;.minX&#123;id: 1434&#125;, UILayoutGuide:0x1d09bf560&apos;UIButtonBar.minimumInterItemSpaceLayoutGuide&apos;.minY&#123;id: 1435&#125;, UILayoutGuide:0x1d09bf560&apos;UIButtonBar.minimumInterItemSpaceLayoutGuide&apos;.Height&#123;id: 1436&#125;</div><div class="line">|   |   |   |   |   *&lt;UILayoutGuide: 0x1d09be4c0 - &quot;UIButtonBar.minimumInterGroupSpaceLayoutGuide&quot;, layoutFrame = &#123;&#123;-342, 0&#125;, &#123;8, 0&#125;&#125;, owningView = &lt;_UIButtonBarStackView: 0x1189125f0; frame = (342 0; 17 44); layer = &lt;CALayer: 0x1d0622460&gt;&gt;&gt;- AMBIGUOUS LAYOUT for UILayoutGuide:0x1d09be4c0&apos;UIButtonBar.minimumInterGroupSpaceLayoutGuide&apos;.minX&#123;id: 1437&#125;, UILayoutGuide:0x1d09be4c0&apos;UIButtonBar.minimumInterGroupSpaceLayoutGuide&apos;.minY&#123;id: 1438&#125;, UILayoutGuide:0x1d09be4c0&apos;UIButtonBar.minimumInterGroupSpaceLayoutGuide&apos;.Height&#123;id: 1439&#125;</div><div class="line">|   |   |   |   |   *&lt;UILayoutGuide: 0x1d09bc1c0 - &quot;UIViewLayoutMarginsGuide&quot;, layoutFrame = &#123;&#123;0, 0&#125;, &#123;17, 44&#125;&#125;, owningView = &lt;_UIButtonBarStackView: 0x1189125f0; frame = (342 0; 17 44); layer = &lt;CALayer: 0x1d0622460&gt;&gt;&gt;</div><div class="line">|   |   |   |   |   *_UITAMICAdaptorView:0x11892c6f0</div><div class="line">|   |   |   |   |   |   UIButton:0x10860c7c0</div><div class="line">|   |   |   |   |   |   |   UIImageView:0x118905300</div><div class="line">|   |   |   |   *UILabel:0x1092d6100&apos;朋友&apos;</div><div class="line">|   |   |   +_UINavigationBarModernPromptView:0x118910a10</div><div class="line">|   |   |   |   *UILabel:0x118910c10</div><div class="line"></div><div class="line">Legend:</div><div class="line">	* - is laid out with auto layout</div><div class="line">	+ - is laid out manually, but is represented in the layout engine because translatesAutoresizingMaskIntoConstraints = YES</div><div class="line">	• - layout engine host</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="unko WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="unko Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/11/基于xcodeproj构建多target编译文件对比脚本/" rel="next" title="基于xcodeproj构建多target编译文件对比脚本">
+                <i class="fa fa-chevron-left"></i> 基于xcodeproj构建多target编译文件对比脚本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="unko" />
+          <p class="site-author-name" itemprop="name">unko</p>
+           
+              <p class="site-description motion-element" itemprop="description">二也是一种生活态度</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#断点介绍"><span class="nav-number">1.</span> <span class="nav-text">断点介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、-一般断点"><span class="nav-number">1.1.</span> <span class="nav-text">一、 一般断点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#条件断点"><span class="nav-number">1.1.1.</span> <span class="nav-text">条件断点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#断点编辑"><span class="nav-number">1.1.2.</span> <span class="nav-text">断点编辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组合使用"><span class="nav-number">1.1.3.</span> <span class="nav-text">组合使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、特殊断点"><span class="nav-number">1.1.4.</span> <span class="nav-text">二、特殊断点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-异常断点（Exception-Breakpoint）"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.  异常断点（Exception Breakpoint）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#符号断点（Symbolic-Breakpoint）"><span class="nav-number">1.1.6.</span> <span class="nav-text">符号断点（Symbolic Breakpoint）</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">unko</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jdVfeigycejyhEtB9zj0DqAO-gzGzoHsz", "8oTynlmScfap4jvEAPKyUDoc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

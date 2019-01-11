@@ -1,0 +1,909 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,XcodeProj," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="人力有时尽，物力有时穷  一、起我们的项目工程主要用的target有两个，一个用于App Store版本的开发，一个用于企业包版本的开发。  因为金唐支付业务需求，很久没打得企业包又重新上场了。线上打包很顺利，蓝色小灯亮起  说明打包没问题，编译通过，心里喜滋滋。。。 但是运行的时候，缺失各种崩溃，我的内心也是崩溃的。。。 二、因 我们可以看到问题的原因是类的.m文件未勾选相应target导致的">
+<meta name="keywords" content="iOS,XcodeProj">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于xcodeproj构建多target编译文件对比脚本">
+<meta property="og:url" content="http://www.unko.cn/2019/01/11/基于xcodeproj构建多target编译文件对比脚本/index.html">
+<meta property="og:site_name" content="unko">
+<meta property="og:description" content="人力有时尽，物力有时穷  一、起我们的项目工程主要用的target有两个，一个用于App Store版本的开发，一个用于企业包版本的开发。  因为金唐支付业务需求，很久没打得企业包又重新上场了。线上打包很顺利，蓝色小灯亮起  说明打包没问题，编译通过，心里喜滋滋。。。 但是运行的时候，缺失各种崩溃，我的内心也是崩溃的。。。 二、因 我们可以看到问题的原因是类的.m文件未勾选相应target导致的">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fys2oydw4fj30940a6wfo.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fys71hkpzmj306h06t74k.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fys7pc23mwj31970u0b2a.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fys9b1416bj30y50u04m6.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fysd4waz8fj31ba0l0n5a.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fyxrc95bu8j30ox09qwfe.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fyxrc6kxioj30hl0i8gnm.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fyy3lao888j30d40ok0v7.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fyz877i9gmj30ia0b1gqd.jpg">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1933920-583c47f85ff24c6e.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000">
+<meta property="og:updated_time" content="2019-01-11T06:45:45.018Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于xcodeproj构建多target编译文件对比脚本">
+<meta name="twitter:description" content="人力有时尽，物力有时穷  一、起我们的项目工程主要用的target有两个，一个用于App Store版本的开发，一个用于企业包版本的开发。  因为金唐支付业务需求，很久没打得企业包又重新上场了。线上打包很顺利，蓝色小灯亮起  说明打包没问题，编译通过，心里喜滋滋。。。 但是运行的时候，缺失各种崩溃，我的内心也是崩溃的。。。 二、因 我们可以看到问题的原因是类的.m文件未勾选相应target导致的">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fys2oydw4fj30940a6wfo.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.unko.cn/2019/01/11/基于xcodeproj构建多target编译文件对比脚本/"/>
+
+
+
+
+
+  <title> 基于xcodeproj构建多target编译文件对比脚本 | unko </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">unko</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">unko</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.unko.cn/2019/01/11/基于xcodeproj构建多target编译文件对比脚本/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="unko">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="unko">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于xcodeproj构建多target编译文件对比脚本
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-11T14:09:46+08:00">
+                2019-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/01/11/基于xcodeproj构建多target编译文件对比脚本/" class="leancloud_visitors" data-flag-title="基于xcodeproj构建多target编译文件对比脚本">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>人力有时尽，物力有时穷</p>
+</blockquote>
+<h3 id="一、起"><a href="#一、起" class="headerlink" title="一、起"></a>一、起</h3><p>我们的项目工程主要用的target有两个，一个用于App Store版本的开发，一个用于企业包版本的开发。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fys2oydw4fj30940a6wfo.jpg" alt="image-20190102112048386"></p>
+<p>因为金唐支付业务需求，很久没打得企业包又重新上场了。线上打包很顺利，蓝色小灯亮起</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fys71hkpzmj306h06t74k.jpg" alt="image-20190102135118700"></p>
+<p>说明打包没问题，编译通过，心里喜滋滋。。。</p>
+<p>但是运行的时候，缺失各种崩溃，我的内心也是崩溃的。。。</p>
+<h3 id="二、因"><a href="#二、因" class="headerlink" title="二、因"></a>二、因</h3><p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fys7pc23mwj31970u0b2a.jpg" alt="image-20190102141406774"></p>
+<p>我们可以看到问题的原因是类的.m文件未勾选相应target导致的问题。当然这里也分两种情况：</p>
+<ol>
+<li><strong>普通类，编译不会通过，打包时直接报错，易发现。</strong></li>
+<li><strong>分类，编译通过，打包不会报错，运行时崩溃，难发现。</strong></li>
+</ol>
+<p><strong>在我们新建分类文件的时候，默认是不勾选其他target。</strong>如下图显示</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fys9b1416bj30y50u04m6.jpg" alt="image-20190102150940858"></p>
+<hr>
+<p>如果未勾选Enterprise Target,将不参加编译。</p>
+<p><strong>第一种情况还好，最迟在打包的时候可以发现，细心一点自己提前build一下也可以提前发现。第二种情况如果在创建文件的时候忽略了勾选target，到后期绝对是灾难。</strong></p>
+<h3 id="三、思"><a href="#三、思" class="headerlink" title="三、思"></a>三、思</h3><p>那么怎么来避免这种情况的发生？虽然我一直强调的”创建文件一定要勾选全target”,感觉没什么卵用。。。</p>
+<p>后面想着对比下两个target的<strong>Compile Sources</strong>文件来着，一看到我们工程976个文件我就放弃了。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fysd4waz8fj31ba0l0n5a.jpg" alt="image-20190102172210888"></p>
+<p><strong>那我就想有没有办法写个脚本将两个Target的Compile Sources文件分别读取出来，然后对比,输出差集。</strong>这样就简单多了</p>
+<h3 id="四、解"><a href="#四、解" class="headerlink" title="四、解"></a>四、解</h3><p>我们在使用cocoapods的时候，有没有注意到，我们的工程项目被修改了。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fyxrc95bu8j30ox09qwfe.jpg" alt="image-20190107084922219"></p>
+<p>这说明cocoapods有操作（读写）工程文件的能力，在github上一搜还真找到了一个项目<code>CocoaPods/Xcodeproj</code></p>
+<h4 id="cocoapods的Xcodeproj"><a href="#cocoapods的Xcodeproj" class="headerlink" title="cocoapods的Xcodeproj"></a>cocoapods的Xcodeproj</h4><p>在readme中可以看到，如何访问到target中的文件files，如下图</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fyxrc6kxioj30hl0i8gnm.jpg" alt="image-20190107092120468"></p>
+<h4 id="求解思路"><a href="#求解思路" class="headerlink" title="求解思路"></a>求解思路</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#获取第一个target</span></div><div class="line">targetA = project.targets[<span class="number">0</span>]</div><div class="line">filesA = targetA.source_build_phase.files.to_a.map <span class="keyword">do</span> <span class="params">|pbx_build_file|</span></div><div class="line">    pbx_build_file.file_ref.real_path.to_s</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="comment">#获取第二个target</span></div><div class="line">targetB = project.targets[<span class="number">1</span>]</div><div class="line">filesB = targetB.source_build_phase.files.to_a.map <span class="keyword">do</span> <span class="params">|pbx_build_file|</span></div><div class="line">    pbx_build_file.file_ref.real_path.to_s</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="comment">#求差集</span></div><div class="line">files = (filesA <span class="params">| filesB) - filesB</span></div></pre></td></tr></table></figure>
+<h4 id="最终实现的脚本："><a href="#最终实现的脚本：" class="headerlink" title="最终实现的脚本："></a>最终实现的脚本：</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/ruby</span></div><div class="line"><span class="comment">#此脚本需要用到xcodeproj，如未安装，请先执行 gem install xcodeproj 安装xcodeproj。</span></div><div class="line"><span class="keyword">require</span> <span class="string">'xcodeproj'</span></div><div class="line"><span class="comment">#比较资源文件开关 默认false不比较， true比较</span></div><div class="line">resourcesCheck = <span class="literal">false</span></div><div class="line"><span class="comment">#打开项目工程文件</span></div><div class="line">project_path = <span class="string">'../Documents/code/workspace/TownCheer/GameCenter.xcodeproj'</span></div><div class="line">project = Xcodeproj::Project.open(project_path)</div><div class="line"><span class="comment">#过滤出NativeTarget</span></div><div class="line">native_targets = project.native_targets</div><div class="line"><span class="comment">#将第一个target做为默认对比的target</span></div><div class="line">baseTarget = native_targets.first</div><div class="line">baseTargetFiles = baseTarget.source_build_phase.files.to_a.map <span class="keyword">do</span> <span class="params">|pbx_build_file|</span></div><div class="line">	pbx_build_file.file_ref.real_path.to_s</div><div class="line"><span class="keyword">end</span></div><div class="line">baseTargetResource = baseTarget.resources_build_phase.files.to_a.map <span class="keyword">do</span> <span class="params">|pbx_build_file|</span></div><div class="line">    pbx_build_file.file_ref.real_path.to_s</div><div class="line"><span class="keyword">end</span></div><div class="line"><span class="comment">#打印targets</span></div><div class="line">puts native_targets</div><div class="line"><span class="comment">#计算target差集</span></div><div class="line">native_targets.each <span class="keyword">do</span> <span class="params">|target|</span> </div><div class="line">    <span class="keyword">if</span> target != baseTarget </div><div class="line">        <span class="comment">#解析代码文件</span></div><div class="line">        files = target.source_build_phase.files.to_a.map <span class="keyword">do</span> <span class="params">|pbx_build_file|</span></div><div class="line">            pbx_build_file.file_ref.real_path.to_s</div><div class="line">        <span class="keyword">end</span></div><div class="line">        fileset = (baseTargetFiles <span class="params">| files) - files</span></div><div class="line">        puts '==============source===================='</div><div class="line">        <span class="keyword">if</span> (fileset.length &gt; 0)</div><div class="line">            puts "target #&#123;target.name&#125; 相对于 target #&#123;baseTarget.name&#125; 中未勾选以下文件:"</div><div class="line">            puts fileset </div><div class="line">        <span class="keyword">else</span> </div><div class="line">            puts "未找到"</div><div class="line">        <span class="keyword">end</span></div><div class="line">        #判断是否开启资源文件检查</div><div class="line">        <span class="keyword">if</span> resourcesCheck</div><div class="line">            #解析资源文件</div><div class="line">            resources = target.resources_build_phase.files.to_a.map <span class="keyword">do</span> |pbx_build_file<span class="params">|</span></div><div class="line">                pbx_build_file.file_ref.real_path.to_s</div><div class="line">            <span class="keyword">end</span></div><div class="line">            resourceset = (baseTargetResource | resources) - resources</div><div class="line">            puts <span class="string">'==============resource===================='</span></div><div class="line"></div><div class="line">            <span class="keyword">if</span> (resourceset.length &gt; <span class="number">0</span>)</div><div class="line">                puts <span class="string">"target <span class="subst">#&#123;target.name&#125;</span> 相对于 target <span class="subst">#&#123;baseTarget.name&#125;</span> 中未勾选以下文件:"</span></div><div class="line">                puts resourceset</div><div class="line">            <span class="keyword">else</span> </div><div class="line">                puts <span class="string">"未找到"</span></div><div class="line">            <span class="keyword">end</span></div><div class="line">        <span class="keyword">end</span></div><div class="line">    <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<h4 id="如何查询接口"><a href="#如何查询接口" class="headerlink" title="如何查询接口"></a>如何查询接口</h4><p>下图是XcodeProj官方文档中提供的class list</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fyy3lao888j30d40ok0v7.jpg" alt="XcodeProj Doc"></p>
+<p>查询第三方文档，推荐使用Dash.</p>
+<p>演示Dash查询文档</p>
+<h4 id="ruby的一些简单语法"><a href="#ruby的一些简单语法" class="headerlink" title="ruby的一些简单语法"></a>ruby的一些简单语法</h4><p>集合,交集和并集</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># &amp; 为求交集，|为求并集</span></div><div class="line"></div><div class="line">&gt; arr_a = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>]</div><div class="line">&gt; arr_b = [<span class="string">"c"</span>, <span class="string">"d"</span>]</div><div class="line">&gt; (arr_a<span class="params">|arr_b) - arr_a</span></div><div class="line">&gt; ["d"]</div></pre></td></tr></table></figure>
+<p>条件判断</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> conditional</div><div class="line">      code</div><div class="line"><span class="keyword">elsif</span> conditional </div><div class="line">      code</div><div class="line"><span class="keyword">else</span></div><div class="line">      code</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+<p>占位符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#&#123;变量名称&#125;</div></pre></td></tr></table></figure>
+<p>例</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">puts <span class="string">"局部变量的值为 <span class="subst">#&#123;i&#125;</span>"</span></div></pre></td></tr></table></figure>
+<h3 id="五、xcode工程文件"><a href="#五、xcode工程文件" class="headerlink" title="五、xcode工程文件"></a>五、xcode工程文件</h3><h4 id="xcodeproj文件"><a href="#xcodeproj文件" class="headerlink" title=".xcodeproj文件"></a>.xcodeproj文件</h4><p>Xcode的工程文件是 工程名.xcodeproj，而它其实是个package目录，通过显示包内容，可以查看到它内部主要有project.pbxproj 和 xcuserdata。其中，xcuserdata 一般是跟用户相关的一些设置，如断点 记录等，一般不用放到版本管理中。而project.pbxproj 是工程描述文件，描述了工程里的源码文件、schema设置等。</p>
+<h4 id="project-pbxproj"><a href="#project-pbxproj" class="headerlink" title="project.pbxproj"></a>project.pbxproj</h4><p>project.pbxproj文件存储着 Xcode 工程的各项配置参数,它本质上是一种旧风格的 Property List 文件，历史可追溯到 NeXT 的 OpenStep 。</p>
+<p>对于NeXTSTEP格式的Property List 文件来说，整个的project.pbxproj文件就是一个字典，里面最外层有5个键值对，key分别为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	archiveVersion = 1;  </div><div class="line">	classes = &#123;&#125;;</div><div class="line">	objectVersion = 48;</div><div class="line">	objects = &#123;</div><div class="line">        /* Begin PBXBuildFile section */</div><div class="line">        ...</div><div class="line">        /* End PBXBuildFile section */</div><div class="line">        </div><div class="line">        /* Begin PBXFileReference section */</div><div class="line">        ...</div><div class="line">        /* End PBXFileReference section */</div><div class="line">        </div><div class="line">        /* Begin PBXGroup section */</div><div class="line">        ...</div><div class="line">        /* End PBXGroup section */</div><div class="line">        </div><div class="line">        /* Begin PBXNativeTarget section */</div><div class="line">        ...</div><div class="line">        /* End PBXNativeTarget section */</div><div class="line">        </div><div class="line">        /* Begin PBXProject section */</div><div class="line">        ...</div><div class="line">        /* End PBXProject section */</div><div class="line">	&#125;;  </div><div class="line">	rootObject = 9A1EC9081FC2A4AD009772FC /* Project object */;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中重要的 Key 是 objects 和 rootObject。</p>
+<p><strong>rootObject</strong>像是一个入口函数，存放了一个PBXProject对象的UUID。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rootObject = 9A1EC9081FC2A4AD009772FC /* Project object */;</div></pre></td></tr></table></figure>
+<p><strong>PBXProject</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">/* Begin PBXProject section */</div><div class="line">		9A1EC9081FC2A4AD009772FC /* Project object */ = &#123;</div><div class="line">			isa = PBXProject;</div><div class="line">			attributes = &#123;</div><div class="line">				LastUpgradeCheck = 0910;</div><div class="line">				ORGANIZATIONNAME = unko;</div><div class="line">				TargetAttributes = &#123;</div><div class="line">					9A1EC90F1FC2A4AD009772FC = &#123;</div><div class="line">						CreatedOnToolsVersion = 9.1;</div><div class="line">						ProvisioningStyle = Manual;</div><div class="line">					&#125;;</div><div class="line">					9A1EC9271FC2A4AE009772FC = &#123;</div><div class="line">						CreatedOnToolsVersion = 9.1;</div><div class="line">						ProvisioningStyle = Automatic;</div><div class="line">						TestTargetID = 9A1EC90F1FC2A4AD009772FC;</div><div class="line">					&#125;;</div><div class="line">					9A1EC9321FC2A4AE009772FC = &#123;</div><div class="line">						CreatedOnToolsVersion = 9.1;</div><div class="line">						ProvisioningStyle = Automatic;</div><div class="line">						TestTargetID = 9A1EC90F1FC2A4AD009772FC;</div><div class="line">					&#125;;</div><div class="line">				&#125;;</div><div class="line">			&#125;;</div><div class="line">			buildConfigurationList = 9A1EC90B1FC2A4AD009772FC /* Build configuration list for PBXProject &quot;TestDemo&quot; */;</div><div class="line">			compatibilityVersion = &quot;Xcode 8.0&quot;;</div><div class="line">			developmentRegion = en;</div><div class="line">			hasScannedForEncodings = 0;</div><div class="line">			knownRegions = (</div><div class="line">				en,</div><div class="line">				Base,</div><div class="line">			);</div><div class="line">			mainGroup = 9A1EC9071FC2A4AD009772FC;</div><div class="line">			productRefGroup = 9A1EC9111FC2A4AD009772FC /* Products */;</div><div class="line">			projectDirPath = &quot;&quot;;</div><div class="line">			projectRoot = &quot;&quot;;</div><div class="line">			targets = (</div><div class="line">				9A1EC90F1FC2A4AD009772FC /* TestDemo */,</div><div class="line">				9A1EC9271FC2A4AE009772FC /* TestDemoTests */,</div><div class="line">				9A1EC9321FC2A4AE009772FC /* TestDemoUITests */,</div><div class="line">			);</div><div class="line">		&#125;;</div><div class="line">/* End PBXProject section */</div></pre></td></tr></table></figure>
+<p>PBXProject顾名思义就是工程，对应构建可执行的二进制目标程序或库，里面包含了编译工程所需的全部信息。<br>1、isa 可以把每个value看做一个对象，可以发现每一个value都有一个isa字段，代表value的类型。<br>2、attributes 属性，包含一些编译器的基本信息，版本，以及项目中的target，每一个target一个UUID其中，Xcode自动创建的项目里面有三个target一个就是所要编译的APP主target，其余两个为test Target，可以看到其余两个target中有一个字段TestTargetID指向主target，可以理解为依赖相关吧。<br>3、buildConfigurationList 配置列表 指向一个配置字典 XCConfigurationList 类型类型（稍后讲）<br>4、compatibilityVersion 应该是兼容版本 目前看来是 Xcode 3.2<br>5、developmentRegion 语言版本，en英语<br>6、hasScannedForEncodings 是否已经扫描了文件编码信息<br>7、knownRegions 不同区域的本地资源文件列表<br>8、mainGroup Xcode的文件组织形式，可以理解为文件层次 PBXGroup 类型<br>9、productRefGroup 编译后的输出文件 PBXGroup 类型<br>10、projectDirPath，projectRoot 项目路径和项目的根目录 目前为空<br>11、targets 项目下的三个target对象 PBXNativeTarget类型</p>
+<p><strong>XCConfigurationList</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">/* Begin XCConfigurationList section */</div><div class="line">		9A1EC90B1FC2A4AD009772FC /* Build configuration list for PBXProject &quot;TestDemo&quot; */ = &#123;</div><div class="line">			isa = XCConfigurationList;</div><div class="line">			buildConfigurations = (</div><div class="line">				9A1EC93A1FC2A4AE009772FC /* Debug */,</div><div class="line">				9A1EC93B1FC2A4AE009772FC /* Release */,</div><div class="line">			);</div><div class="line">			defaultConfigurationIsVisible = 0;</div><div class="line">			defaultConfigurationName = Release;</div><div class="line">		&#125;;</div><div class="line">		9A1EC93C1FC2A4AE009772FC /* Build configuration list for PBXNativeTarget &quot;TestDemo&quot; */ = &#123;</div><div class="line">			isa = XCConfigurationList;</div><div class="line">			buildConfigurations = (</div><div class="line">				9A1EC93D1FC2A4AE009772FC /* Debug */,</div><div class="line">				9A1EC93E1FC2A4AE009772FC /* Release */,</div><div class="line">			);</div><div class="line">			defaultConfigurationIsVisible = 0;</div><div class="line">			defaultConfigurationName = Release;</div><div class="line">		&#125;;</div><div class="line">		9A1EC93F1FC2A4AE009772FC /* Build configuration list for PBXNativeTarget &quot;TestDemoTests&quot; */ = &#123;</div><div class="line">			isa = XCConfigurationList;</div><div class="line">			buildConfigurations = (</div><div class="line">				9A1EC9401FC2A4AE009772FC /* Debug */,</div><div class="line">				9A1EC9411FC2A4AE009772FC /* Release */,</div><div class="line">			);</div><div class="line">			defaultConfigurationIsVisible = 0;</div><div class="line">			defaultConfigurationName = Release;</div><div class="line">		&#125;;</div><div class="line">		9A1EC9421FC2A4AE009772FC /* Build configuration list for PBXNativeTarget &quot;TestDemoUITests&quot; */ = &#123;</div><div class="line">			isa = XCConfigurationList;</div><div class="line">			buildConfigurations = (</div><div class="line">				9A1EC9431FC2A4AE009772FC /* Debug */,</div><div class="line">				9A1EC9441FC2A4AE009772FC /* Release */,</div><div class="line">			);</div><div class="line">			defaultConfigurationIsVisible = 0;</div><div class="line">			defaultConfigurationName = Release;</div><div class="line">		&#125;;</div><div class="line">/* End XCConfigurationList section */</div></pre></td></tr></table></figure>
+<p>XCConfigurationList是一个构建配置相关元素的列表，里面有一个项目文件（TestDemo），三个target（TestDemo、TestDemoTests和TestDemoUITests）对应于你在Xcode界面中看到的这样，如图，<img src="https://ws3.sinaimg.cn/large/006tNc79gy1fyz877i9gmj30ia0b1gqd.jpg" alt="image-20190108155018299"></p>
+<p>每一个都有相对应的配置属性buildConfigurations，而每个配置属性都有两个的版本（Debug和Release）<br>那Debug和Release又对应什么呢？是XCBuildConfiguration：</p>
+<p><strong>XCBuildConfiguration</strong></p>
+<p>XCBuildConfiguration构建具体的配置元素，也就是Xcode的Build Setting面板中所涉及的选项。至于每个字段所代表的含义可再深入研究。</p>
+<p><strong>PBXNativeTarget</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">9A1EC90F1FC2A4AD009772FC /* TestDemo */ = &#123;</div><div class="line">			isa = PBXNativeTarget;</div><div class="line">			buildConfigurationList = 9A1EC93C1FC2A4AE009772FC /* Build configuration list for PBXNativeTarget &quot;TestDemo&quot; */;</div><div class="line">			buildPhases = (</div><div class="line">				5D85ED4278F395AE0A1EC0E7 /* [CP] Check Pods Manifest.lock */,</div><div class="line">				9A1EC90C1FC2A4AD009772FC /* Sources */,</div><div class="line">				9A1EC90D1FC2A4AD009772FC /* Frameworks */,</div><div class="line">				9A1EC90E1FC2A4AD009772FC /* Resources */,</div><div class="line">				C91EA1773EF316C0A4208A7B /* [CP] Embed Pods Frameworks */,</div><div class="line">				D96710C682564835D2F9EEC7 /* [CP] Copy Pods Resources */,</div><div class="line">			);</div><div class="line">			buildRules = (</div><div class="line">			);</div><div class="line">			dependencies = (</div><div class="line">			);</div><div class="line">			name = TestDemo;</div><div class="line">			productName = TestDemo;</div><div class="line">			productReference = 9A1EC9101FC2A4AD009772FC /* TestDemo.app */;</div><div class="line">			productType = &quot;com.apple.product-type.application&quot;;</div><div class="line">		&#125;;</div></pre></td></tr></table></figure>
+<p>PBXNativeTarget，对应于生成的可执行二进制程序或库文件的本地构建目标对象。里面的主要内容是：<br>1、buildConfigurationList 这个我们在讲述PBXProject时已经介绍过，是一个配置相关元素相关的列表。<br>2、buildPhases 构建阶段所涉及的源文件（PBXSourcesBuildPhase类型）、框架（PBXFrameworksBuildPhase类型）和资源（PBXResourcesBuildPhase）以数组形式组织。<br>3、buildRules 指定了不同文件类型该如何编译<br>4、dependencies 列出了在Xcode build phase tab中列出的target依赖项<br>5、productReference 目标文件（PBXFileReference）</p>
+<p><strong>PBXSourcesBuildPhase</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">/* Begin PBXSourcesBuildPhase section */</div><div class="line">		9A1EC90C1FC2A4AD009772FC /* Sources */ = &#123;</div><div class="line">			isa = PBXSourcesBuildPhase;</div><div class="line">			buildActionMask = 2147483647;</div><div class="line">			files = (</div><div class="line">				...</div><div class="line">				9A1EC9151FC2A4AD009772FC /* AppDelegate.m in Sources */,</div><div class="line">			);</div><div class="line">			runOnlyForDeploymentPostprocessing = 0;</div><div class="line">		&#125;;</div><div class="line">/* End PBXSourcesBuildPhase section */</div></pre></td></tr></table></figure>
+<p>PBXSourcesBuildPhase 代表构建阶段需要复制的资源文件 文件组织在key为files的value中的数组列表里，每个元素为PBXBuildFile类型。</p>
+<p><strong>PBXBuildFile</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/* Begin PBXBuildFile section */</div><div class="line">		9A1EC9151FC2A4AD009772FC /* AppDelegate.m in Sources */ = &#123;isa = PBXBuildFile; fileRef = 9A1EC9141FC2A4AD009772FC /* AppDelegate.m */; &#125;;</div><div class="line">		...</div><div class="line">/* End PBXBuildFile section */</div></pre></td></tr></table></figure>
+<p>PBXBuildFile 代表文件元素，被PBXBuildPhase等作为文件包含或被引用的资源，其实里面fileRef指向最终的文件PBXFileReference。</p>
+<p><strong>PBXFileReference</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/* Begin PBXFileReference section */</div><div class="line">9A1EC9141FC2A4AD009772FC /* AppDelegate.m */ = &#123;isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = &quot;&lt;group&gt;&quot;; &#125;;</div><div class="line">/* End PBXFileReference section */</div></pre></td></tr></table></figure>
+<p>项目所引用的每一个外部文件，比如源代码文件、资源文件、库文件、生成目标文件等，每一个外部文件都可以在这里找到，也就是在Xcode的文件导航栏所看到的文件组织形式。</p>
+<p><strong>文件结构流程图</strong></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1933920-583c47f85ff24c6e.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000" alt=""></p>
+<h3 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h3><p>虽然事情的起因是因为代码文件没有勾选target，但是本次分享的目的是让大家了解project.pbxproj文件结构及实现脚本一些思路。</p>
+<p>了解 project.pbxproj文件的结构，有利于我们在解决 project.pbxproj文件冲突的时候，不破坏project.pbxproj文件。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="unko WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="unko Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/XcodeProj/" rel="tag"># XcodeProj</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/11/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/11/Xcode断点调试/" rel="prev" title="Xcode断点调试">
+                Xcode断点调试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="unko" />
+          <p class="site-author-name" itemprop="name">unko</p>
+           
+              <p class="site-description motion-element" itemprop="description">二也是一种生活态度</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、起"><span class="nav-number">1.</span> <span class="nav-text">一、起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、因"><span class="nav-number">2.</span> <span class="nav-text">二、因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、思"><span class="nav-number">3.</span> <span class="nav-text">三、思</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、解"><span class="nav-number">4.</span> <span class="nav-text">四、解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cocoapods的Xcodeproj"><span class="nav-number">4.1.</span> <span class="nav-text">cocoapods的Xcodeproj</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#求解思路"><span class="nav-number">4.2.</span> <span class="nav-text">求解思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最终实现的脚本："><span class="nav-number">4.3.</span> <span class="nav-text">最终实现的脚本：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何查询接口"><span class="nav-number">4.4.</span> <span class="nav-text">如何查询接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ruby的一些简单语法"><span class="nav-number">4.5.</span> <span class="nav-text">ruby的一些简单语法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、xcode工程文件"><span class="nav-number">5.</span> <span class="nav-text">五、xcode工程文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#xcodeproj文件"><span class="nav-number">5.1.</span> <span class="nav-text">.xcodeproj文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#project-pbxproj"><span class="nav-number">5.2.</span> <span class="nav-text">project.pbxproj</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结尾"><span class="nav-number">6.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">unko</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jdVfeigycejyhEtB9zj0DqAO-gzGzoHsz", "8oTynlmScfap4jvEAPKyUDoc");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
