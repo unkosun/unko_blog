@@ -87,37 +87,17 @@
 
 
 
-<meta name="description" content="无埋点统计使用的最关键技术就是 Method Swizzling。本篇内容将介绍如何收集数据。
-目前我们主要收集三类数据：
-
-全局数据：包含 App信息和设备信息
-页面浏览数据：统计页面访问时长信息
-点击数据：统计点击事件数据信息
-
-一、全局数据在 App启动初始化 统计模块的时候，就会生成一条关于 App信息的记录。统计 App的设备，系统版本，还有 App的版本等。每次启动 App,有且仅有1">
+<meta name="description" content="无埋点统计使用的最关键技术就是 Method Swizzling。本篇内容将介绍如何收集数据。 目前我们主要收集三类数据：  全局数据：包含 App信息和设备信息 页面浏览数据：统计页面访问时长信息 点击数据：统计点击事件数据信息  一、全局数据在 App启动初始化 统计模块的时候，就会生成一条关于 App信息的记录。统计 App的设备，系统版本，还有 App的版本等。每次启动 App,有且仅有1">
+<meta name="keywords" content="iOS,无埋点,统计">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS简单无埋点统计的实现（一）——数据收集篇">
 <meta property="og:url" content="http://www.unko.cn/2017/07/10/iOS简单无埋点统计的实现（一）——数据收集篇/index.html">
 <meta property="og:site_name" content="unko">
-<meta property="og:description" content="无埋点统计使用的最关键技术就是 Method Swizzling。本篇内容将介绍如何收集数据。
-目前我们主要收集三类数据：
-
-全局数据：包含 App信息和设备信息
-页面浏览数据：统计页面访问时长信息
-点击数据：统计点击事件数据信息
-
-一、全局数据在 App启动初始化 统计模块的时候，就会生成一条关于 App信息的记录。统计 App的设备，系统版本，还有 App的版本等。每次启动 App,有且仅有1">
-<meta property="og:updated_time" content="2017-07-10T07:22:40.000Z">
+<meta property="og:description" content="无埋点统计使用的最关键技术就是 Method Swizzling。本篇内容将介绍如何收集数据。 目前我们主要收集三类数据：  全局数据：包含 App信息和设备信息 页面浏览数据：统计页面访问时长信息 点击数据：统计点击事件数据信息  一、全局数据在 App启动初始化 统计模块的时候，就会生成一条关于 App信息的记录。统计 App的设备，系统版本，还有 App的版本等。每次启动 App,有且仅有1">
+<meta property="og:updated_time" content="2019-01-11T05:57:15.462Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS简单无埋点统计的实现（一）——数据收集篇">
-<meta name="twitter:description" content="无埋点统计使用的最关键技术就是 Method Swizzling。本篇内容将介绍如何收集数据。
-目前我们主要收集三类数据：
-
-全局数据：包含 App信息和设备信息
-页面浏览数据：统计页面访问时长信息
-点击数据：统计点击事件数据信息
-
-一、全局数据在 App启动初始化 统计模块的时候，就会生成一条关于 App信息的记录。统计 App的设备，系统版本，还有 App的版本等。每次启动 App,有且仅有1">
+<meta name="twitter:description" content="无埋点统计使用的最关键技术就是 Method Swizzling。本篇内容将介绍如何收集数据。 目前我们主要收集三类数据：  全局数据：包含 App信息和设备信息 页面浏览数据：统计页面访问时长信息 点击数据：统计点击事件数据信息  一、全局数据在 App启动初始化 统计模块的时候，就会生成一条关于 App信息的记录。统计 App的设备，系统版本，还有 App的版本等。每次启动 App,有且仅有1">
 
 
 
@@ -387,8 +367,8 @@
 <li>同类型子 view 下标引用<br>UIWindow/../../TestViewController.view/Button1</li>
 <li>设置唯一标识</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@interface UIView (AutoAnalytics)</span><br><span class="line">@property (nonatomic, strong, nullable) NSString * autoAnalyticsUniqueID; //别名</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
-<h2 id="四、数据定义"><a href="#四、数据定义" class="headerlink" title="四、数据定义"></a>四、数据定义</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@interface AutoAnalyticsLog : BaseEntity</span><br><span class="line">@property (nonatomic, strong) NSString * sessionID;         ///&lt; session id</span><br><span class="line">@property (nonatomic, strong) NSString * name;              ///&lt; 名称；</span><br><span class="line">@property (nonatomic, assign) NSTimeInterval dateInterval;  ///&lt; 时间戳</span><br><span class="line">@property (nonatomic, strong) NSString * parentID;          ///&lt; 父统计节点的ID</span><br><span class="line">@property (nonatomic, strong) NSDictionary * logInfo;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@interface UIView (AutoAnalytics)</div><div class="line">@property (nonatomic, strong, nullable) NSString * autoAnalyticsUniqueID; //别名</div><div class="line">@end</div></pre></td></tr></table></figure>
+<h2 id="四、数据定义"><a href="#四、数据定义" class="headerlink" title="四、数据定义"></a>四、数据定义</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@interface AutoAnalyticsLog : BaseEntity</div><div class="line">@property (nonatomic, strong) NSString * sessionID;         ///&lt; session id</div><div class="line">@property (nonatomic, strong) NSString * name;              ///&lt; 名称；</div><div class="line">@property (nonatomic, assign) NSTimeInterval dateInterval;  ///&lt; 时间戳</div><div class="line">@property (nonatomic, strong) NSString * parentID;          ///&lt; 父统计节点的ID</div><div class="line">@property (nonatomic, strong) NSDictionary * logInfo;</div><div class="line">@end</div></pre></td></tr></table></figure>
 <h3 id="记录关联"><a href="#记录关联" class="headerlink" title="记录关联"></a>记录关联</h3><p>全局数据记录每此 App启动只生成1条，而浏览记录和点击记录是可以多条的。这个时候我们就需要用到记录和记录之前的关联。<br>一条点击事件的记录如何来确定是在哪个页面浏览时发生的？一条浏览事件的记录如何来确定是哪次 App启动产生的？</p>
 <p>答案是 通过parentID关联 sessionID。</p>
 <h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><ol>
@@ -547,7 +527,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -560,7 +540,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -618,7 +598,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
